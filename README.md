@@ -6,7 +6,6 @@
 [![Plotly](https://img.shields.io/badge/Plotly.js-Interactive-3F4F75.svg?logo=plotly&logoColor=white)](https://plotly.com/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-3.0%2B-38B2AC.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Vercel Ready](https://img.shields.io/badge/Vercel-Serverless%20Ready-black.svg?logo=vercel&logoColor=white)](https://vercel.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **DatapipelineA1** is a high-performance, privacy-first data analytics engine that translates natural language questions into deterministic Python code, executes it inside a secure local sandbox, and renders interactive visualizations with statistical insight cards.
 
@@ -360,8 +359,4 @@ To prevent arbitrary code execution (RCE) vulnerabilities, all LLM-generated cod
 ```
 
 ---
-
-## 📄 License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for full details.
 
