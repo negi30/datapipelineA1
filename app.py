@@ -27,11 +27,11 @@ if __name__ == "__main__":
     host = os.environ.get("HOST", "127.0.0.1")
 
     print("=" * 65)
-    print("  📊 DataChat AI Agent - 10MB Dataset Analytics & Runner")
+    print("  📊 DataPipeline — Autonomous Data Intelligence & Analytics")
     print("=" * 65)
     print(f"  Server URL: http://{host}:{port}")
     print(f"  API Docs:   http://{host}:{port}/docs")
-    print(f"  Dataset:    sample_retail_data.csv (or upload custom up to 10MB)")
+    print(f"  Dataset:    sample_retail_data.csv (or upload custom)")
     print("=" * 65)
 
     threading.Thread(target=open_browser, args=(port,), daemon=True).start()

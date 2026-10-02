@@ -187,7 +187,7 @@ function appendUserMessage(text) {
   const msg = document.createElement("div");
   msg.className = "flex justify-end";
   msg.innerHTML = `
-    <div class="max-w-2xl bg-indigo-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 text-xs leading-relaxed shadow-sm">
+    <div class="max-w-2xl bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 text-xs leading-relaxed shadow-md shadow-orange-600/10">
       <p class="font-medium">${escapeHtml(text)}</p>
     </div>
   `;
@@ -202,11 +202,11 @@ function appendLoadingIndicator() {
   el.id = id;
   el.className = "flex items-start gap-3";
   el.innerHTML = `
-    <div class="h-8 w-8 rounded-lg bg-indigo-600/20 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20">
-      <i class="fa-solid fa-spinner fa-spin text-sm"></i>
+    <div class="h-8 w-8 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 border border-orange-500/20">
+      <i class="fa-solid fa-spinner fa-spin text-xs"></i>
     </div>
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-sm px-4 py-3 text-xs text-slate-400 flex items-center gap-2">
-      <span>Analyzing schema, generating safe code, and executing...</span>
+    <div class="bg-[#0e0e13] border border-white/10 rounded-2xl rounded-tl-sm px-4 py-3 text-xs text-zinc-400 flex items-center gap-2">
+      <span>Compiling schema, running AST safety checks, and executing...</span>
     </div>
   `;
   stream.appendChild(el);
@@ -226,23 +226,23 @@ function appendAgentResponse(data) {
   let providerBadge = "";
   const prov = (data.provider || "").toLowerCase();
   if (prov.includes("gemini")) {
-    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-medium"><i class="fa-solid fa-brain mr-1"></i>Gemini 3.6 Flash</span>`;
+    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full font-medium"><i class="fa-solid fa-brain mr-1"></i>Gemini 3.6 Flash</span>`;
   } else if (prov.includes("groq")) {
-    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 font-medium"><i class="fa-solid fa-bolt mr-1"></i>Groq Llama 3.3</span>`;
+    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full font-medium"><i class="fa-solid fa-bolt mr-1"></i>Groq Llama 3.3</span>`;
   } else if (prov.includes("openai")) {
-    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-medium"><i class="fa-solid fa-microchip mr-1"></i>OpenAI GPT-4o</span>`;
+    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full font-medium"><i class="fa-solid fa-microchip mr-1"></i>OpenAI GPT-4o</span>`;
   } else if (prov.includes("ollama")) {
-    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-medium"><i class="fa-solid fa-server mr-1"></i>Local Ollama</span>`;
+    providerBadge = `<span class="badge-info text-[10px] font-mono px-2.5 py-0.5 rounded-full font-medium"><i class="fa-solid fa-server mr-1"></i>Local Ollama</span>`;
   } else {
-    providerBadge = `<span class="bg-slate-800 text-slate-400 border border-slate-700 text-[10px] font-mono px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-robot mr-1"></i>${escapeHtml(data.provider || 'Offline')}</span>`;
+    providerBadge = `<span class="bg-zinc-800 text-zinc-400 border border-white/10 text-[10px] font-mono px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-robot mr-1"></i>${escapeHtml(data.provider || 'Offline')}</span>`;
   }
 
   // Safety status badge
   let safetyBadge = "";
   if (exec.success) {
-    safetyBadge = `<span class="badge-safe text-[10px] font-mono px-2 py-0.5 rounded-full"><i class="fa-solid fa-shield-check mr-1"></i>Code Safety Passed</span>`;
+    safetyBadge = `<span class="badge-safe text-[10px] font-mono px-2.5 py-0.5 rounded-full font-medium"><i class="fa-solid fa-shield-check mr-1"></i>AST Verified</span>`;
   } else {
-    safetyBadge = `<span class="badge-unsafe text-[10px] font-mono px-2 py-0.5 rounded-full"><i class="fa-solid fa-triangle-exclamation mr-1"></i>${escapeHtml(exec.error_type || "Error")}</span>`;
+    safetyBadge = `<span class="badge-unsafe text-[10px] font-mono px-2.5 py-0.5 rounded-full font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i>${escapeHtml(exec.error_type || "Error")}</span>`;
   }
 
   let resultContent = "";
@@ -279,20 +279,20 @@ function appendAgentResponse(data) {
     let insightsHtml = "";
     if (exec.insights && exec.insights.length > 0) {
       insightsHtml = `
-        <div class="bg-gradient-to-r from-indigo-950/30 to-slate-900 border border-indigo-500/30 rounded-xl p-4 space-y-3">
-          <div class="flex items-center gap-2 text-xs font-semibold text-indigo-300">
+        <div class="bg-gradient-to-r from-orange-950/20 to-[#0e0e13] border border-orange-500/20 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center gap-2 text-xs font-semibold text-orange-300">
             <i class="fa-solid fa-lightbulb text-amber-400 text-sm"></i>
-            <span>Data Observations & Graph Insights</span>
+            <span>Automated Insights & Outlier Analysis</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
             ${exec.insights.map(ins => `
-              <div class="bg-slate-950/70 border border-slate-800/90 p-3 rounded-lg text-xs flex items-start gap-2.5 shadow-sm">
-                <div class="h-6 w-6 rounded-md bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 mt-0.5 border border-indigo-500/20">
+              <div class="bg-black/60 border border-white/[0.08] p-3 rounded-xl text-xs flex items-start gap-2.5 shadow-sm">
+                <div class="h-6 w-6 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 mt-0.5 border border-orange-500/20">
                   <i class="fa-solid ${ins.icon} text-xs"></i>
                 </div>
                 <div>
-                  <div class="font-semibold text-slate-200 text-xs mb-0.5">${ins.title}</div>
-                  <div class="text-slate-400 text-[11px] leading-relaxed">${ins.text}</div>
+                  <div class="font-semibold text-zinc-200 text-xs mb-0.5">${ins.title}</div>
+                  <div class="text-zinc-400 text-[11px] leading-relaxed">${ins.text}</div>
                 </div>
               </div>
             `).join('')}
@@ -307,19 +307,19 @@ function appendAgentResponse(data) {
         ${insightsHtml}
 
         <!-- Interactive Chart Placeholder -->
-        ${exec.chart ? `<div id="${chartId}" class="w-full h-72 rounded-xl bg-slate-950 border border-slate-800 p-2"></div>` : ""}
+        ${exec.chart ? `<div id="${chartId}" class="w-full h-72 rounded-2xl bg-[#09090d] border border-white/10 p-2 shadow-inner"></div>` : ""}
 
         <!-- Data Table -->
-        <div class="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden">
-          <div class="px-4 py-2 bg-slate-800/60 border-b border-slate-800 flex justify-between items-center text-xs">
-            <span class="text-slate-400">Showing <strong class="text-white">${exec.displayed_rows}</strong> of <strong class="text-white">${exec.total_rows}</strong> rows</span>
-            <button onclick="downloadCSV(${JSON.stringify(exec.columns).replace(/"/g, '&quot;')}, ${JSON.stringify(exec.data).replace(/"/g, '&quot;')})" class="text-indigo-400 hover:text-indigo-300 flex items-center gap-1 font-medium">
-              <i class="fa-solid fa-download"></i> Export CSV
+        <div class="bg-[#09090d] rounded-2xl border border-white/10 overflow-hidden shadow-sm">
+          <div class="px-4 py-2.5 bg-zinc-900/60 border-b border-white/[0.08] flex justify-between items-center text-xs">
+            <span class="text-zinc-400">Showing <strong class="text-white">${exec.displayed_rows}</strong> of <strong class="text-white">${exec.total_rows}</strong> rows</span>
+            <button onclick="downloadCSV(${JSON.stringify(exec.columns).replace(/"/g, '&quot;')}, ${JSON.stringify(exec.data).replace(/"/g, '&quot;')})" class="text-orange-400 hover:text-orange-300 flex items-center gap-1.5 font-medium transition">
+              <i class="fa-solid fa-download text-xs"></i> Export CSV
             </button>
           </div>
           <div class="overflow-x-auto max-h-64">
             <table class="w-full text-left text-xs border-collapse">
-              <thead class="bg-slate-800/90 text-left sticky top-0"><tr>${colsHtml}</tr></thead>
+              <thead class="bg-zinc-900/90 text-left sticky top-0"><tr>${colsHtml}</tr></thead>
               <tbody>${rowsHtml}</tbody>
             </table>
           </div>
@@ -328,31 +328,31 @@ function appendAgentResponse(data) {
     `;
   } else {
     resultContent = `
-      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs text-slate-300">
+      <div class="bg-[#09090d] p-4 rounded-2xl border border-white/10 font-mono text-xs text-zinc-300">
         ${escapeHtml(JSON.stringify(exec.value, null, 2))}
       </div>
     `;
   }
 
   container.innerHTML = `
-    <div class="h-8 w-8 rounded-lg bg-indigo-600/20 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20 mt-1">
-      <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+    <div class="h-8 w-8 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 border border-orange-500/20 mt-1">
+      <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
     </div>
-    <div class="flex-1 bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-sm p-5 space-y-4 max-w-4xl shadow-sm">
-      <div class="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-3 flex-wrap">
+    <div class="flex-1 bg-[#0e0e13] border border-white/10 rounded-2xl rounded-tl-sm p-5 space-y-4 max-w-4xl shadow-xl">
+      <div class="flex items-center justify-between gap-2 border-b border-white/[0.08] pb-3 flex-wrap">
         <div class="flex items-center gap-2">
           ${providerBadge}
           ${safetyBadge}
         </div>
-        <button class="toggle-code-btn text-[11px] text-slate-400 hover:text-white flex items-center gap-1">
-          <i class="fa-solid fa-code text-indigo-400"></i>
+        <button class="toggle-code-btn text-[11px] text-zinc-400 hover:text-white flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-code text-orange-400 text-xs"></i>
           <span>Toggle Generated Code</span>
         </button>
       </div>
 
       <!-- Collapsible Code Container -->
       <div class="code-container hidden">
-        <div class="code-box p-3 text-xs overflow-x-auto text-indigo-300 relative group">
+        <div class="code-box p-3 text-xs overflow-x-auto text-orange-300 relative group">
           <pre class="font-mono"><code>${escapeHtml(exec.code || "")}</code></pre>
         </div>
       </div>
@@ -388,35 +388,35 @@ function renderPlotlyChart(elementId, chart) {
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
     margin: { t: 40, r: 20, l: 50, b: 40 },
-    font: { family: "inherit", color: "#94a3b8", size: 11 },
-    title: { text: chart.title, font: { color: "#f8fafc", size: 13 } },
-    xaxis: { gridcolor: "#1e293b", zerolinecolor: "#334155" },
-    yaxis: { gridcolor: "#1e293b", zerolinecolor: "#334155" }
+    font: { family: "'Helvetica Neue', Helvetica, 'Inter', sans-serif", color: "#a1a1aa", size: 11 },
+    title: { text: chart.title, font: { color: "#ffffff", size: 13, family: "'Helvetica Neue', Helvetica, 'Inter', sans-serif" } },
+    xaxis: { gridcolor: "rgba(255,255,255,0.06)", zerolinecolor: "rgba(255,255,255,0.12)" },
+    yaxis: { gridcolor: "rgba(255,255,255,0.06)", zerolinecolor: "rgba(255,255,255,0.12)" }
   };
 
   const config = { responsive: true, displayModeBar: false };
 
   if (chart.type === "grouped_bar" || (chart.barmode === "group" && chart.series)) {
-    const palette = ["#6366f1", "#06b6d4", "#ec4899", "#10b981", "#f59e0b", "#8b5cf6", "#3b82f6"];
+    const palette = ["#ea580c", "#f59e0b", "#06b6d4", "#10b981", "#8b5cf6", "#ec4899", "#3b82f6"];
     const traces = chart.series.map((s, idx) => ({
       type: "bar",
       name: s.name,
       x: chart.x,
       y: s.y,
       marker: { color: palette[idx % palette.length] },
-      opacity: 0.9
+      opacity: 0.95
     }));
     Plotly.newPlot(el, traces, {
       ...darkLayout,
       barmode: "group",
-      legend: { font: { color: "#cbd5e1" }, orientation: "h", y: -0.2 }
+      legend: { font: { color: "#d4d4d8" }, orientation: "h", y: -0.2 }
     }, config);
   } else if (chart.type === "bar") {
     Plotly.newPlot(el, [{
       type: "bar",
       x: chart.x,
       y: chart.y,
-      marker: { color: "#6366f1", opacity: 0.9 }
+      marker: { color: "#ea580c", opacity: 0.95 }
     }], darkLayout, config);
   } else if (chart.type === "line") {
     Plotly.newPlot(el, [{
@@ -424,8 +424,8 @@ function renderPlotlyChart(elementId, chart) {
       mode: "lines+markers",
       x: chart.x,
       y: chart.y,
-      line: { color: "#818cf8", width: 2.5 },
-      marker: { color: "#6366f1", size: 6 }
+      line: { color: "#f97316", width: 2.5 },
+      marker: { color: "#ea580c", size: 6 }
     }], darkLayout, config);
   } else if (chart.type === "pie") {
     darkLayout.margin = { t: 40, r: 20, l: 20, b: 20 };
@@ -434,7 +434,7 @@ function renderPlotlyChart(elementId, chart) {
       hole: 0.5,
       labels: chart.labels,
       values: chart.values,
-      marker: { colors: ["#6366f1", "#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ec4899", "#84cc16"] }
+      marker: { colors: ["#ea580c", "#f59e0b", "#06b6d4", "#10b981", "#8b5cf6", "#ec4899", "#3b82f6"] }
     }], darkLayout, config);
   } else if (chart.type === "scatter") {
     const trace = {
@@ -511,7 +511,7 @@ function initUpload() {
 
   async function handleFileUpload(file) {
     if (file.size > 10 * 1024 * 1024) {
-      alert("File exceeds maximum allowed limit of 10MB.");
+      alert("File exceeds maximum allowed upload limit.");
       return;
     }
 

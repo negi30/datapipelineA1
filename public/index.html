@@ -1,134 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DataChat AI - 10MB Dataset Agent</title>
+  <title>DataPipeline — Autonomous Data Intelligence</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Plotly.js for dynamic visualizations -->
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
-  <!-- Heroicons -->
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="/style.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+            }
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
+<body class="bg-[#060608] text-zinc-100 min-h-screen flex flex-col font-sans antialiased relative selection:bg-orange-500/30 selection:text-white">
+
+  <!-- Ambient Lighting Effect -->
+  <div class="ambient-glow"></div>
 
   <!-- Navigation Bar -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-        <i class="fa-solid fa-brain text-white text-lg"></i>
+  <header class="relative z-40 border-b border-white/[0.07] bg-[#09090d]/80 backdrop-blur-xl sticky top-0 px-6 py-3 flex items-center justify-between">
+    <!-- Brand Identity -->
+    <div class="flex items-center gap-3.5">
+      <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/25 ring-1 ring-white/20">
+        <i class="fa-solid fa-chart-simple text-white text-sm"></i>
       </div>
       <div>
         <div class="flex items-center gap-2">
-          <h1 class="font-bold text-lg text-white tracking-tight">DataChat AI Agent</h1>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-medium">10MB Serverless Ready</span>
+          <h1 class="font-bold text-base text-white tracking-tight flex items-center gap-1.5">
+            DataPipeline
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          </h1>
         </div>
-        <p class="text-xs text-slate-400">Natural Language Data Analysis & Safe Pandas Execution Engine</p>
+        <p class="text-[11px] text-zinc-400 font-normal">Deterministic Data Intelligence & Sandboxed Analytics</p>
       </div>
     </div>
 
-    <!-- Dataset Meta & Quick Actions -->
-    <div class="flex items-center gap-4">
-      <div id="dataset-badge" class="hidden md:flex items-center gap-3 bg-slate-800/80 px-3.5 py-1.5 rounded-lg border border-slate-700 text-xs">
-        <span class="flex items-center gap-1.5 text-slate-300 font-medium">
-          <i class="fa-regular fa-file-lines text-indigo-400"></i>
-          <span id="meta-filename">sample_retail_data.csv</span>
+    <!-- Center Floating Status & Actions -->
+    <div class="flex items-center gap-3">
+      <!-- Active Dataset Badge -->
+      <div id="dataset-badge" class="hidden md:flex items-center gap-2.5 bg-zinc-900/90 px-3.5 py-1.5 rounded-full border border-white/10 text-xs shadow-sm">
+        <span class="flex items-center gap-1.5 text-zinc-300 font-medium">
+          <i class="fa-regular fa-file-lines text-orange-400 text-xs"></i>
+          <span id="meta-filename" class="font-mono text-[11px] text-zinc-200">dataset.csv</span>
         </span>
-        <span class="text-slate-600">•</span>
-        <span id="meta-rows" class="text-slate-400">0 rows</span>
-        <span class="text-slate-600">•</span>
-        <span id="meta-cols" class="text-slate-400">0 cols</span>
-        <span class="text-slate-600">•</span>
-        <span id="meta-memory" class="text-emerald-400 font-mono">0.0 MB</span>
+        <span class="text-zinc-600">•</span>
+        <span id="meta-rows" class="text-zinc-400 font-mono text-[11px]">0 rows</span>
+        <span class="text-zinc-600">•</span>
+        <span id="meta-cols" class="text-zinc-400 font-mono text-[11px]">0 cols</span>
+        <span class="text-zinc-600">•</span>
+        <span id="meta-memory" class="text-emerald-400 font-mono text-[11px]">0.0 MB</span>
       </div>
 
-      <button id="btn-upload-modal" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-2 rounded-lg transition flex items-center gap-2">
-        <i class="fa-solid fa-cloud-arrow-up text-indigo-400"></i>
-        <span>Change Dataset</span>
+      <!-- Change Dataset Action -->
+      <button id="btn-upload-modal" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/10 px-3.5 py-1.5 rounded-full transition flex items-center gap-2 shadow-sm font-medium">
+        <i class="fa-solid fa-cloud-arrow-up text-orange-400 text-xs"></i>
+        <span>Switch Dataset</span>
       </button>
 
-      <button id="btn-settings-modal" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-3.5 py-2 rounded-lg transition flex items-center gap-2 shadow-sm">
-        <i class="fa-solid fa-robot"></i>
-        <span id="btn-llm-label">Connect LLM</span>
+      <!-- LLM Configuration Action -->
+      <button id="btn-settings-modal" class="btn-orange-glow text-xs text-white font-medium px-4 py-1.5 rounded-full transition flex items-center gap-2 shadow-sm">
+        <i class="fa-solid fa-robot text-xs"></i>
+        <span id="btn-llm-label">AI Model</span>
       </button>
     </div>
   </header>
 
   <!-- Main Workspace -->
-  <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+  <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative z-10">
     
-    <!-- Navigation Tabs -->
-    <aside class="w-full md:w-64 border-r border-slate-800 bg-slate-900/40 p-4 flex md:flex-col gap-1.5 shrink-0 overflow-x-auto">
-      <button data-tab="tab-chat" class="tab-btn active flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 transition text-left">
-        <i class="fa-regular fa-comments text-indigo-400 w-4"></i>
+    <!-- Navigation Sidebar -->
+    <aside class="w-full md:w-60 border-r border-white/[0.07] bg-[#09090d]/50 backdrop-blur-md p-3.5 flex md:flex-col gap-1.5 shrink-0 overflow-x-auto">
+      <div class="hidden md:block px-3 py-1.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-widest">
+        Workspace
+      </div>
+
+      <button data-tab="tab-chat" class="tab-btn active flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-800/50 transition text-left">
+        <i class="fa-regular fa-comments text-orange-400 w-4"></i>
         <span>Chat & Analytics</span>
       </button>
-      <button data-tab="tab-schema" class="tab-btn flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition text-left">
+      <button data-tab="tab-schema" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
         <i class="fa-solid fa-network-wired text-cyan-400 w-4"></i>
         <span>Schema Extractor</span>
       </button>
-      <button data-tab="tab-summary" class="tab-btn flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition text-left">
+      <button data-tab="tab-summary" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
         <i class="fa-solid fa-chart-pie text-emerald-400 w-4"></i>
         <span>Statistical Summary</span>
       </button>
-      <button data-tab="tab-dict" class="tab-btn flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition text-left">
+      <button data-tab="tab-dict" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
         <i class="fa-solid fa-book-bookmark text-amber-400 w-4"></i>
         <span>Data Dictionary</span>
       </button>
-      <button data-tab="tab-preview" class="tab-btn flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition text-left">
+      <button data-tab="tab-preview" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
         <i class="fa-solid fa-table-cells text-violet-400 w-4"></i>
         <span>Raw Data Preview</span>
       </button>
       
-      <div class="hidden md:block mt-auto pt-4 border-t border-slate-800/80">
-        <div class="text-[11px] text-slate-500 font-medium px-2 mb-2">Vercel Deployment</div>
-        <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 text-[11px] text-slate-400 space-y-1">
-          <p class="text-slate-300 font-medium">Ready for <code class="text-indigo-400 font-mono">vercel --prod</code></p>
-          <p>Serverless limits respected: <span class="text-emerald-400">10MB cap</span>, memory downcasting, safe execution.</p>
+      <!-- Enterprise Architecture Badge -->
+      <div class="hidden md:block mt-auto pt-4 border-t border-white/[0.06]">
+        <div class="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider px-2 mb-2">Engine Architecture</div>
+        <div class="bg-zinc-950/80 p-3 rounded-xl border border-white/[0.08] text-[11px] text-zinc-400 space-y-1.5">
+          <div class="flex items-center gap-1.5 text-zinc-200 font-medium">
+            <i class="fa-solid fa-shield-halved text-emerald-400 text-xs"></i>
+            <span>AST Sandboxing Active</span>
+          </div>
+          <p class="text-[10px] text-zinc-500 leading-relaxed">
+            Zero raw data leakage. Deterministic Pandas execution with dynamic cardinality checking.
+          </p>
         </div>
       </div>
     </aside>
 
     <!-- Tab Contents Container -->
-    <main class="flex-1 flex flex-col overflow-hidden bg-slate-950">
+    <main class="flex-1 flex flex-col overflow-hidden bg-[#060608]">
 
       <!-- TAB 1: Chat & Analytics -->
       <section id="tab-chat" class="tab-pane flex-1 flex flex-col h-full overflow-hidden">
-        <!-- Chat History -->
+        
+        <!-- Chat History Stream -->
         <div id="chat-stream" class="flex-1 overflow-y-auto p-6 space-y-6">
-          <!-- Welcome Greeting Card -->
-          <div class="bg-gradient-to-r from-slate-900 to-indigo-950/40 p-5 rounded-2xl border border-slate-800 shadow-sm">
-            <div class="flex items-start gap-4">
-              <div class="h-10 w-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/30">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
+          
+          <!-- Hero Banner - Sheryians-inspired High-End Header -->
+          <div class="relative overflow-hidden bg-gradient-to-b from-[#111116] to-[#0a0a0e] p-8 rounded-3xl border border-white/10 shadow-2xl">
+            <!-- Subtle background grid effect -->
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent pointer-events-none"></div>
+
+            <div class="relative z-10 space-y-4 max-w-3xl">
+              <!-- Eyebrow -->
+              <div class="inline-flex items-center gap-2">
+                <span class="text-orange-500 font-semibold tracking-[0.2em] text-[11px] uppercase">
+                  DETERMINISTIC. PRIVACY-FIRST. SANDBOXED.
+                </span>
               </div>
-              <div class="space-y-2">
-                <h2 class="font-semibold text-white text-sm">Welcome to your AI Data Copilot</h2>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                  Ask natural language questions about your dataset. The agent combines your extracted schema, business data dictionary, and summary statistics to write safe, verified Pandas code, execute it in real time, and generate interactive charts.
-                </p>
-                <!-- Quick Query Chips -->
-                <div class="pt-2">
-                  <p class="text-[11px] text-slate-400 font-medium mb-1.5 uppercase tracking-wider">Try asking:</p>
-                  <div class="flex flex-wrap gap-2">
-                    <button class="query-chip text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded-full border border-slate-700 transition">
-                      Top 5 brands by revenue
-                    </button>
-                    <button class="query-chip text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded-full border border-slate-700 transition">
-                      Total revenue and profit by state
-                    </button>
-                    <button class="query-chip text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded-full border border-slate-700 transition">
-                      Monthly sales and profit trend
-                    </button>
-                    <button class="query-chip text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded-full border border-slate-700 transition">
-                      Store profit margin ranking
-                    </button>
-                    <button class="query-chip text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded-full border border-slate-700 transition">
-                      Top 10 highest rated products
-                    </button>
-                  </div>
+
+              <!-- Main Hero Headline with Signature Framed Keyword Box -->
+              <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                Transform Complex Datasets Into <span class="keyword-box">Decisions</span> You Can Trust!
+              </h2>
+
+              <!-- Subtitle -->
+              <p class="text-xs md:text-sm text-zinc-400 leading-relaxed max-w-2xl">
+                Ask questions in natural language. DataPipeline profiles the schema, writes verified Python code in an isolated AST sandbox, and visualizes outcomes with zero raw data leakage.
+              </p>
+
+              <!-- Trust / Architecture Feature Badges -->
+              <div class="pt-2 flex flex-wrap items-center gap-3 text-xs text-zinc-300">
+                <div class="flex items-center gap-1.5 bg-zinc-900/80 px-3 py-1.5 rounded-full border border-white/10">
+                  <i class="fa-solid fa-lock text-orange-400 text-xs"></i>
+                  <span class="font-medium text-[11px]">Zero Data Leakage</span>
+                </div>
+                <div class="flex items-center gap-1.5 bg-zinc-900/80 px-3 py-1.5 rounded-full border border-white/10">
+                  <i class="fa-solid fa-bolt text-amber-400 text-xs"></i>
+                  <span class="font-medium text-[11px]">AST-Sandboxed Pandas</span>
+                </div>
+                <div class="flex items-center gap-1.5 bg-zinc-900/80 px-3 py-1.5 rounded-full border border-white/10">
+                  <i class="fa-solid fa-chart-line text-emerald-400 text-xs"></i>
+                  <span class="font-medium text-[11px]">Plotly Bivariate Charts</span>
+                </div>
+              </div>
+
+              <!-- Quick Query Chips -->
+              <div class="pt-3 border-t border-white/[0.08]">
+                <p class="text-[11px] text-zinc-500 font-semibold mb-2 uppercase tracking-wider">Suggested Inquiries:</p>
+                <div class="flex flex-wrap gap-2">
+                  <button class="query-chip">Top 5 brands by revenue</button>
+                  <button class="query-chip">Total revenue and profit by state</button>
+                  <button class="query-chip">Peak Streams vs Total Streams scatter plot</button>
+                  <button class="query-chip">Monthly sales and profit trend</button>
+                  <button class="query-chip">Highest average streams per song</button>
+                  <button class="query-chip">Store profit margin ranking</button>
                 </div>
               </div>
             </div>
@@ -136,119 +194,132 @@
           <!-- Dynamic Messages will be injected here -->
         </div>
 
-        <!-- Chat Input Footer -->
-        <div class="p-4 border-t border-slate-800 bg-slate-900/60 backdrop-blur">
-          <form id="chat-form" class="flex gap-2.5 max-w-5xl mx-auto">
-            <div class="relative flex-1">
+        <!-- The Helvetica Command Prompt Footer -->
+        <div class="p-5 border-t border-white/[0.08] bg-[#08080b]/90 backdrop-blur-xl">
+          <form id="chat-form" class="max-w-4xl mx-auto">
+            <div class="helvetica-prompt-container p-2 flex items-center gap-3">
+              <!-- Left Icon -->
+              <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 border border-orange-500/20 ml-1">
+                <i class="fa-solid fa-terminal text-sm"></i>
+              </div>
+
+              <!-- Helvetica Input Field -->
               <input 
                 id="chat-input"
                 type="text" 
                 placeholder="Ask an analytical question (e.g. 'Show revenue by state as a bar chart')..." 
-                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition shadow-inner"
+                class="helvetica-prompt-input w-full bg-transparent border-none px-2 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none"
                 autocomplete="off"
                 required
               />
+
+              <!-- Keyboard Shortcut Hint -->
+              <div class="hidden sm:flex items-center text-[10px] text-zinc-500 font-mono px-2 py-1 rounded bg-zinc-900 border border-white/5 select-none shrink-0">
+                ↵ Enter
+              </div>
+
+              <!-- Submit Button -->
+              <button 
+                type="submit" 
+                id="chat-submit-btn"
+                class="btn-orange-glow text-white px-5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+              >
+                <span>Execute</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </button>
             </div>
-            <button 
-              type="submit" 
-              id="chat-submit-btn"
-              class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl text-xs font-semibold flex items-center gap-2 transition shadow-md shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span>Ask Agent</span>
-              <i class="fa-solid fa-arrow-up text-xs"></i>
-            </button>
           </form>
         </div>
       </section>
 
       <!-- TAB 2: Schema Extractor -->
       <section id="tab-schema" class="tab-pane hidden flex-1 p-6 overflow-y-auto space-y-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
           <div>
-            <h2 class="text-base font-semibold text-white">Extracted Schema (`utils/schema_extractor.py`)</h2>
-            <p class="text-xs text-slate-400">Automated column dtypes, numeric stats, categorical samples, and ignored list.</p>
+            <h2 class="text-base font-semibold text-white">Extracted Dataset Schema</h2>
+            <p class="text-xs text-zinc-400">Automated column data types, distributions, and dynamic cardinality filtering.</p>
           </div>
-          <span class="text-xs px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-mono">schema_extractor</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-mono font-medium">schema_extractor</span>
         </div>
 
-        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+        <div class="bg-[#0e0e13] p-5 rounded-2xl border border-white/[0.08] space-y-2.5">
           <div class="flex items-center justify-between">
-            <h3 class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Dynamically Ignored Columns (Zero-Variance & Unique IDs)</h3>
-            <span class="text-[10px] text-slate-500 font-mono">Dynamic Cardinality Filter</span>
+            <h3 class="text-xs font-semibold text-zinc-300 uppercase tracking-wider">Dynamically Filtered Columns (Zero-Variance & Identifiers)</h3>
+            <span class="text-[10px] text-zinc-500 font-mono">Dynamic Cardinality Filter</span>
           </div>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Columns automatically filtered to prevent token bloat and noise (constants with 1 unique value, 100% unique row IDs, or near-unique text):
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Columns automatically excluded from prompt injection to prevent context bloat and hallucinated groupings (constants with 1 unique value or 100% unique row IDs):
           </p>
-          <div id="ignored-cols-list" class="flex flex-wrap gap-1.5 pt-1">
-            <span class="text-xs text-slate-500 italic">Analyzing dataset columns...</span>
+          <div id="ignored-cols-list" class="flex flex-wrap gap-2 pt-1">
+            <span class="text-xs text-zinc-500 italic">Analyzing dataset columns...</span>
           </div>
         </div>
 
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
-          <div class="px-4 py-2.5 bg-slate-800/70 border-b border-slate-800 flex justify-between items-center">
-            <span class="text-xs font-mono text-slate-300">Raw Schema Output</span>
-            <button onclick="copyToClipboard('schema-raw')" class="text-xs text-slate-400 hover:text-white transition">
+        <div class="bg-[#0e0e13] rounded-2xl border border-white/[0.08] overflow-hidden">
+          <div class="px-5 py-3 bg-zinc-900/60 border-b border-white/[0.08] flex justify-between items-center">
+            <span class="text-xs font-mono text-zinc-300">Schema Profile</span>
+            <button onclick="copyToClipboard('schema-raw')" class="text-xs text-zinc-400 hover:text-white transition flex items-center gap-1.5">
               <i class="fa-regular fa-copy"></i> Copy
             </button>
           </div>
-          <pre id="schema-raw" class="p-4 text-xs font-mono text-cyan-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[500px]">Loading schema...</pre>
+          <pre id="schema-raw" class="p-5 text-xs font-mono text-cyan-300 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[500px]">Loading schema...</pre>
         </div>
       </section>
 
       <!-- TAB 3: Statistical Summary -->
       <section id="tab-summary" class="tab-pane hidden flex-1 p-6 overflow-y-auto space-y-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
           <div>
-            <h2 class="text-base font-semibold text-white">Statistical Summary (`utils/summary_generator.py`)</h2>
-            <p class="text-xs text-slate-400">Generated using pandas <code>df.describe(include='all')</code> with rich console integration.</p>
+            <h2 class="text-base font-semibold text-white">Statistical Distribution Summary</h2>
+            <p class="text-xs text-zinc-400">Statistical boundaries generated from in-memory DataFrame via <code>df.describe(include='all')</code>.</p>
           </div>
-          <span class="text-xs px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">summary_generator</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-medium">summary_generator</span>
         </div>
 
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
-          <div class="px-4 py-2.5 bg-slate-800/70 border-b border-slate-800 flex justify-between items-center">
-            <span class="text-xs font-mono text-slate-300">Full Dataset Statistics</span>
-            <button onclick="copyToClipboard('summary-raw')" class="text-xs text-slate-400 hover:text-white transition">
+        <div class="bg-[#0e0e13] rounded-2xl border border-white/[0.08] overflow-hidden">
+          <div class="px-5 py-3 bg-zinc-900/60 border-b border-white/[0.08] flex justify-between items-center">
+            <span class="text-xs font-mono text-zinc-300">Statistical Profile</span>
+            <button onclick="copyToClipboard('summary-raw')" class="text-xs text-zinc-400 hover:text-white transition flex items-center gap-1.5">
               <i class="fa-regular fa-copy"></i> Copy
             </button>
           </div>
-          <pre id="summary-raw" class="p-4 text-xs font-mono text-emerald-300 overflow-x-auto whitespace-pre leading-relaxed max-h-[550px]">Loading summary...</pre>
+          <pre id="summary-raw" class="p-5 text-xs font-mono text-emerald-300 overflow-x-auto whitespace-pre leading-relaxed max-h-[550px]">Loading summary...</pre>
         </div>
       </section>
 
       <!-- TAB 4: Data Dictionary -->
       <section id="tab-dict" class="tab-pane hidden flex-1 p-6 overflow-y-auto space-y-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
           <div>
-            <h2 class="text-base font-semibold text-white">Business Data Dictionary</h2>
-            <p class="text-xs text-slate-400">Loaded from <code>data_dictionary.txt</code> to guide LLM semantic mapping.</p>
+            <h2 class="text-base font-semibold text-white">Business Semantic Dictionary</h2>
+            <p class="text-xs text-zinc-400">Loaded from <code>data_dictionary.txt</code> to guide LLM semantic feature mapping.</p>
           </div>
-          <span class="text-xs px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono">data_dictionary.txt</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono font-medium">data_dictionary.txt</span>
         </div>
 
-        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5">
-          <pre id="dict-raw" class="text-xs font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">Loading dictionary...</pre>
+        <div class="bg-[#0e0e13] rounded-2xl border border-white/[0.08] p-5">
+          <pre id="dict-raw" class="text-xs font-mono text-zinc-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">Loading dictionary...</pre>
         </div>
       </section>
 
       <!-- TAB 5: Raw Data Preview -->
       <section id="tab-preview" class="tab-pane hidden flex-1 p-6 overflow-y-auto space-y-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
           <div>
             <h2 class="text-base font-semibold text-white">Raw Dataset Preview (First 10 Rows)</h2>
-            <p class="text-xs text-slate-400">Live sample of the active in-memory DataFrame <code>df</code>.</p>
+            <p class="text-xs text-zinc-400">Sample of the active downcasted in-memory DataFrame <code>df</code>.</p>
           </div>
-          <button id="btn-reset-dataset" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-lg transition">
-            <i class="fa-solid fa-rotate-left mr-1"></i> Reset to Sample
+          <button id="btn-reset-dataset" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/10 px-3.5 py-1.5 rounded-full transition font-medium flex items-center gap-1.5">
+            <i class="fa-solid fa-rotate-left text-xs"></i> Reset Sample
           </button>
         </div>
 
-        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-x-auto shadow-sm">
+        <div class="bg-[#0e0e13] rounded-2xl border border-white/[0.08] overflow-x-auto shadow-sm">
           <table id="preview-table" class="w-full text-xs text-left border-collapse">
-            <thead class="bg-slate-800 text-slate-300 uppercase text-[10px] tracking-wider border-b border-slate-700">
+            <thead class="bg-zinc-900 text-zinc-400 uppercase text-[10px] tracking-wider border-b border-white/[0.08]">
               <tr id="preview-thead"></tr>
             </thead>
-            <tbody id="preview-tbody" class="divide-y divide-slate-800/80 text-slate-300 font-mono"></tbody>
+            <tbody id="preview-tbody" class="divide-y divide-white/[0.04] text-zinc-300 font-mono"></tbody>
           </table>
         </div>
       </section>
@@ -256,15 +327,15 @@
     </main>
   </div>
 
-  <!-- MODAL 1: Upload / Switch Dataset (Up to 10MB) -->
-  <div id="upload-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
-      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+  <!-- MODAL 1: Upload / Switch Dataset -->
+  <div id="upload-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0e0e13] border border-white/10 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl">
+      <div class="px-6 py-4 border-b border-white/[0.08] flex items-center justify-between">
         <h3 class="font-semibold text-white text-sm flex items-center gap-2">
-          <i class="fa-solid fa-file-arrow-up text-indigo-400"></i>
-          <span>Switch or Upload Dataset (Up to 10MB)</span>
+          <i class="fa-solid fa-file-arrow-up text-orange-400"></i>
+          <span>Switch or Upload Dataset</span>
         </h3>
-        <button class="btn-close-modal text-slate-400 hover:text-white">
+        <button class="btn-close-modal text-zinc-400 hover:text-white transition">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -272,33 +343,33 @@
       <div class="p-6 space-y-5">
         <!-- Direct File Upload -->
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-2">Upload CSV or Parquet (Limit: 10MB)</label>
-          <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition bg-slate-950/50">
-            <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-500 mb-2"></i>
-            <p class="text-xs text-slate-300 font-medium">Click to choose file or drag & drop</p>
-            <p class="text-[11px] text-slate-500 mt-1">Supports .csv or .parquet (max 10MB)</p>
+          <label class="block text-xs font-medium text-zinc-300 mb-2">Upload CSV or Parquet Dataset</label>
+          <div id="drop-zone" class="border-2 border-dashed border-zinc-700 hover:border-orange-500 rounded-2xl p-6 text-center cursor-pointer transition bg-zinc-950/60">
+            <i class="fa-solid fa-cloud-arrow-up text-2xl text-orange-500/70 mb-2"></i>
+            <p class="text-xs text-zinc-200 font-medium">Click to choose file or drag & drop</p>
+            <p class="text-[11px] text-zinc-500 mt-1">Supports standard .csv or .parquet tables</p>
             <input type="file" id="file-input" accept=".csv,.parquet" class="hidden" />
           </div>
-          <div id="upload-status" class="hidden text-xs mt-2 text-indigo-400"></div>
+          <div id="upload-status" class="hidden text-xs mt-2 text-orange-400"></div>
         </div>
 
         <div class="relative flex py-1 items-center">
-          <div class="flex-grow border-t border-slate-800"></div>
-          <span class="flex-shrink mx-4 text-[11px] text-slate-500 uppercase tracking-widest font-semibold">Or Load from URL</span>
-          <div class="flex-grow border-t border-slate-800"></div>
+          <div class="flex-grow border-t border-white/[0.08]"></div>
+          <span class="flex-shrink mx-4 text-[11px] text-zinc-500 uppercase tracking-widest font-semibold">Or Load from URL</span>
+          <div class="flex-grow border-t border-white/[0.08]"></div>
         </div>
 
         <!-- Remote URL Ingestion -->
         <div class="space-y-2">
-          <label class="block text-xs font-medium text-slate-300">Public CSV / Parquet URL (S3, GitHub, Cloudflare R2)</label>
+          <label class="block text-xs font-medium text-zinc-300">Public Dataset URL (GitHub raw, S3, Cloudflare)</label>
           <div class="flex gap-2">
             <input 
               type="url" 
               id="url-input" 
-              placeholder="https://example.com/dataset.csv" 
-              class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              placeholder="https://raw.githubusercontent.com/.../data.csv" 
+              class="flex-1 bg-zinc-950 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
             />
-            <button id="btn-load-url" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-3.5 py-2 rounded-lg border border-slate-700 font-medium transition">
+            <button id="btn-load-url" class="btn-orange-glow text-white text-xs px-4 py-2 rounded-xl font-medium transition">
               Load
             </button>
           </div>
@@ -308,48 +379,48 @@
   </div>
 
   <!-- MODAL 2: Settings & API Key -->
-  <div id="settings-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+  <div id="settings-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0e0e13] border border-white/10 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl">
+      <div class="px-6 py-4 border-b border-white/[0.08] flex items-center justify-between">
         <h3 class="font-semibold text-white text-sm flex items-center gap-2">
-          <i class="fa-solid fa-key text-indigo-400"></i>
+          <i class="fa-solid fa-key text-orange-400"></i>
           <span>AI Model Configuration</span>
         </h3>
-        <button class="btn-close-modal text-slate-400 hover:text-white">
+        <button class="btn-close-modal text-zinc-400 hover:text-white transition">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
       <div class="p-6 space-y-4">
         <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1">LLM API Key (Google Gemini / OpenAI / Groq)</label>
+          <label class="block text-xs font-medium text-zinc-300 mb-1.5">LLM API Key (Google Gemini / OpenAI / Groq)</label>
           <input 
             type="password" 
             id="gemini-key-input" 
             placeholder="AIzaSy... or sk-... or gsk-..." 
-            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono"
+            class="w-full bg-zinc-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
           />
-          <div class="flex items-center justify-between text-[11px] mt-1.5">
-            <span class="text-slate-400">Recommended: Google Gemini 2.0 Flash</span>
-            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-indigo-400 hover:text-indigo-300 underline font-medium">Get Free Key &rarr;</a>
+          <div class="flex items-center justify-between text-[11px] mt-2">
+            <span class="text-zinc-400">Recommended: Google Gemini 2.0 Flash</span>
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-orange-400 hover:text-orange-300 underline font-medium">Get Free Key &rarr;</a>
           </div>
         </div>
 
-        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-[11px] text-slate-300 space-y-2">
+        <div class="bg-zinc-950/80 p-3.5 rounded-xl border border-white/[0.08] text-[11px] text-zinc-300 space-y-2">
           <p class="font-semibold text-white flex items-center gap-1.5">
-            <i class="fa-solid fa-microchip text-indigo-400"></i>
+            <i class="fa-solid fa-microchip text-orange-400"></i>
             <span>Supported LLM Providers</span>
           </p>
-          <ul class="space-y-1 text-slate-400 list-disc list-inside">
-            <li><strong class="text-slate-200">Google Gemini</strong> (free at <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-indigo-400 underline">AI Studio</a>)</li>
-            <li><strong class="text-slate-200">Groq</strong> (free fast Llama 3.3 at <a href="https://console.groq.com" target="_blank" class="text-indigo-400 underline">groq.com</a>)</li>
-            <li><strong class="text-slate-200">OpenAI</strong> (GPT-4o-mini via sk-...)</li>
-            <li><strong class="text-slate-200">Local Ollama</strong> (auto-routed if running on localhost:11434)</li>
+          <ul class="space-y-1 text-zinc-400 list-disc list-inside">
+            <li><strong class="text-zinc-200">Google Gemini</strong> (Free tier at <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-orange-400 underline">AI Studio</a>)</li>
+            <li><strong class="text-zinc-200">Groq</strong> (Free fast Llama 3.3 at <a href="https://console.groq.com" target="_blank" class="text-orange-400 underline">groq.com</a>)</li>
+            <li><strong class="text-zinc-200">OpenAI</strong> (GPT-4o-mini via sk-...)</li>
+            <li><strong class="text-zinc-200">Local Ollama</strong> (Auto-routed if running on localhost:11434)</li>
           </ul>
         </div>
 
         <div class="flex justify-end gap-2 pt-2">
-          <button id="btn-save-key" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
+          <button id="btn-save-key" class="btn-orange-glow text-white text-xs font-semibold px-4 py-2 rounded-xl transition">
             Save Key
           </button>
         </div>

@@ -18,8 +18,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(na
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Data Analytics AI Agent",
-    description="Natural Language Data Interrogation & Safe Pandas Execution Engine (10MB Dataset Ready)",
+    title="DataPipeline",
+    description="Deterministic Natural Language Data Analytics & AST-Sandboxed Execution Engine",
     version="1.0.0"
 )
 
