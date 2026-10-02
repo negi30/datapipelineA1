@@ -63,6 +63,78 @@ body {
   color: #ffffff;
 }
 
+/* =========================================================================
+   Sheryians-Inspired Grainy Orange Background for Left Window Workspace
+   ========================================================================= */
+.grainy-orange-workspace-left {
+  position: relative;
+  background-color: #07070a;
+  background-image: 
+    radial-gradient(circle at 10% 25%, rgba(234, 88, 12, 0.42) 0%, rgba(194, 65, 12, 0.25) 30%, rgba(124, 45, 18, 0.12) 55%, rgba(8, 8, 12, 0.95) 85%),
+    radial-gradient(circle at 90% 85%, rgba(245, 158, 11, 0.16) 0%, rgba(194, 65, 12, 0.08) 45%, transparent 70%);
+  overflow: hidden;
+}
+
+/* Subtle Geometric Diamond Grid Lines */
+.grainy-orange-workspace-left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(45deg, rgba(234, 88, 12, 0.08) 1px, transparent 1px),
+    linear-gradient(-45deg, rgba(234, 88, 12, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Authentic Photographic Film Grain / Noise Overlay */
+.grainy-orange-workspace-left::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.28'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: overlay;
+  opacity: 0.95;
+}
+
+.grainy-orange-workspace-left > * {
+  position: relative;
+  z-index: 3;
+}
+
+/* Ambient Grainy Glow radiating into the left of main workspace */
+.workspace-left-ambient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 520px;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at -5% 30%, rgba(234, 88, 12, 0.18) 0%, rgba(194, 65, 12, 0.08) 40%, transparent 75%),
+    radial-gradient(ellipse at 10% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.workspace-left-ambient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.16'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+}
+
 /* Helvetica Prompt Container */
 .helvetica-prompt-container {
   font-family: var(--font-helvetica);
@@ -120,10 +192,11 @@ body {
 }
 
 .tab-btn.active {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: rgba(234, 88, 12, 0.18);
   color: #ffffff;
   font-weight: 600;
   border-left: 3px solid #ea580c;
+  box-shadow: 0 0 12px rgba(234, 88, 12, 0.15);
 }
 
 /* Code block highlight */

@@ -88,41 +88,45 @@
   <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative z-10">
     
     <!-- Navigation Sidebar -->
-    <aside class="w-full md:w-60 border-r border-white/[0.07] bg-[#09090d]/50 backdrop-blur-md p-3.5 flex md:flex-col gap-1.5 shrink-0 overflow-x-auto">
-      <div class="hidden md:block px-3 py-1.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-widest">
-        Workspace
+    <aside class="grainy-orange-workspace-left w-full md:w-60 border-r border-white/[0.08] p-3.5 flex md:flex-col gap-1.5 shrink-0 overflow-x-auto shadow-2xl">
+      <div class="hidden md:block px-3 py-1.5 text-[10px] font-semibold text-orange-400/80 uppercase tracking-widest flex items-center justify-between">
+        <span>Workspace</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
       </div>
 
-      <button data-tab="tab-chat" class="tab-btn active flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-800/50 transition text-left">
+      <button data-tab="tab-chat" class="tab-btn active flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-white transition text-left">
         <i class="fa-regular fa-comments text-orange-400 w-4"></i>
         <span>Chat & Analytics</span>
       </button>
-      <button data-tab="tab-schema" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
+      <button data-tab="tab-schema" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.05] transition text-left">
         <i class="fa-solid fa-network-wired text-cyan-400 w-4"></i>
         <span>Schema Extractor</span>
       </button>
-      <button data-tab="tab-summary" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
+      <button data-tab="tab-summary" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.05] transition text-left">
         <i class="fa-solid fa-chart-pie text-emerald-400 w-4"></i>
         <span>Statistical Summary</span>
       </button>
-      <button data-tab="tab-dict" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
+      <button data-tab="tab-dict" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.05] transition text-left">
         <i class="fa-solid fa-book-bookmark text-amber-400 w-4"></i>
         <span>Data Dictionary</span>
       </button>
-      <button data-tab="tab-preview" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition text-left">
+      <button data-tab="tab-preview" class="tab-btn flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/[0.05] transition text-left">
         <i class="fa-solid fa-table-cells text-violet-400 w-4"></i>
         <span>Raw Data Preview</span>
       </button>
       
       <!-- Enterprise Architecture Badge -->
-      <div class="hidden md:block mt-auto pt-4 border-t border-white/[0.06]">
-        <div class="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider px-2 mb-2">Engine Architecture</div>
-        <div class="bg-zinc-950/80 p-3 rounded-xl border border-white/[0.08] text-[11px] text-zinc-400 space-y-1.5">
-          <div class="flex items-center gap-1.5 text-zinc-200 font-medium">
-            <i class="fa-solid fa-shield-halved text-emerald-400 text-xs"></i>
+      <div class="hidden md:block mt-auto pt-4 border-t border-white/[0.08]">
+        <div class="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider px-2 mb-2 flex items-center gap-1.5">
+          <i class="fa-solid fa-shield-halved text-orange-400 text-xs"></i>
+          <span>Architecture</span>
+        </div>
+        <div class="bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/[0.1] text-[11px] text-zinc-300 space-y-1.5 shadow-lg">
+          <div class="flex items-center gap-1.5 text-white font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             <span>AST Sandboxing Active</span>
           </div>
-          <p class="text-[10px] text-zinc-500 leading-relaxed">
+          <p class="text-[10px] text-zinc-400 leading-relaxed">
             Zero raw data leakage. Deterministic Pandas execution with dynamic cardinality checking.
           </p>
         </div>
@@ -130,7 +134,9 @@
     </aside>
 
     <!-- Tab Contents Container -->
-    <main class="flex-1 flex flex-col overflow-hidden bg-[#060608]">
+    <main class="flex-1 flex flex-col overflow-hidden bg-[#060608] relative">
+      <!-- Ambient Glow extending onto the left side of main workspace -->
+      <div class="workspace-left-ambient"></div>
 
       <!-- TAB 1: Chat & Analytics -->
       <section id="tab-chat" class="tab-pane flex-1 flex flex-col h-full overflow-hidden">
